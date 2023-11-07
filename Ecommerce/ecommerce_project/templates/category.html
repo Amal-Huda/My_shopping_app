@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category  %}
+        {{category.cdescription|truncatewords:155 }}
+    {% else %}
+        Welcome to amaan the complete store.You can flower your needs.
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category  %}
+        {{category.cname }}----Amaan the complete
+    {% else %}
+        Welcome to new collections.
+    {% endif %}
+{% endblock %}
+{% block content %}
+
+{% if category  %}
+<div>
+    <div class="row my_row">
+        <div class="mx-auto">
+        <p><a href="{% url 'ecommerce_app:allProdCat' %}" >Our product collections </a></p>
+        </div>
+    </div>
+</div>
+{% endif  %}
+
+<div class="mx-auto">
+    {% if category  %}
+    <h1 class="text-center my_title">{{category.cname}}</h1>
+    <img class="product_image product_image_padding" src="{{ category.cimage.url}}"alt="{{category.cname}}">
+</div>
+    <br>
+
+
+<div>
+    <p class="text-justify">{{category.cdescription}}</p>
+</div>
+    {% else %}
+<div>
+<img  src="{% static 'images/banner.png'%}" alt="OUR Products" height="320" width="100%">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">Our Product collection</h1>
+    <p class="text-justify">Clothing is any item worn on the body. Typically, clothing is made of fabrics or textiles, but over time it has included garments made from animal skin and other thin sheets of materials and natural products found in the environment, put together.Clothing is also worn for decoration, as a fashion. People from different cultures wear different clothing, and have different beliefs and customs about what type of clothing should be worn. For many people, clothing is a status symbol. It helps people project an image. Often, clothing is a form of self-expression. Adults in different social or work situations present different views of themselves by the clothes they wear. Young people have an entirely different form of dress to express their personalities. Often people will simply follow popular fashion styles so that they will fit in. Clothing is far more than just a means to protect our bodies.
+</div>
+{% endif %}
+
+
+<div>
+    <div class="container">
+
+        <div class="row mx-auto">
+
+            {% for product in products.object_list %}
+            <div class="my_bottom_margin col-9 col-sm-12  col-md-4 col-lg-4" >
+                <br>
+
+                <div class="card" style="width: 18rem;">
+                <a href="{{ product.get_url }}"><img class="card-img-top product_image" src="{{ product.pimage.url }}" alt="{{ product.pname }}"></a>
+                <div class="card-body">
+                <h4 class="card-title">{{product.pname}}</h4>
+                <p class="card-text">{{product.price}}</p>
+                </div>
+                </div>
+            </div>
+            {% endfor %}
+            <br>
+        </div>
+
+        <div class="mx-auto">
+
+            {% if products.paginator.num_pages > 1 %}
+            <hr>
+            <div class="text-center">
+                {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %} ">{{pg}}</a>
+                {% endfor %}
+
+            </div>
+            {% endif %}
+
+        </div>
+        <br>
+    </div>
+</div>
+{% endblock %}
